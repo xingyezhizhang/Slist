@@ -131,6 +131,7 @@ bool Delete_Node(unsigned int id, SLIST *phead)
 		del = move->NEXT;
 		//使上一个节点 关联 要删除的节点的下一个节点 
 		move->NEXT = del->NEXT;
+		free(del->NAME);  //释放数据内存
 		free(del);   //删除节点
 		//维护ID的连续性
 		move = move->NEXT;
@@ -220,11 +221,10 @@ bool Show_Slist(SLIST *phead)
 }
 
 //销毁链表
-bool Clean_Slist(SLIST *phead)
+bool Clean_Slist(SLIST **pphead)
 {
 	SLIST *move, *del;
-	move = phead;
-	del = move;
+	move = *pphead;
 	if (move)  				//判断是否有链表 
 	{
 		if (move->ID)  		//判断是否是链表的头指针 
@@ -232,12 +232,17 @@ bool Clean_Slist(SLIST *phead)
 			printf("请输入头指针！\n");
 			return false;
 		}
-		while (move = move->NEXT)
+		/******************链表销毁******************/
+		while (del = move)  //del指针移到要删除的节点
 		{
-			free(del);
-			del = move;
+			move = move->NEXT;	//move指针移到下一个节点
+			free(del->NAME);  //释放数据内存
+			free(del);		  //删除节点
 		}
+		*pphead = NULL;  //头指针清零
+		/******************链表销毁******************/
 		printf("链表销毁完毕！\n");
+		return true;
 	}
 	printf("当前没有链表，无需销毁！\n");
 	return true;

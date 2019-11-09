@@ -31,7 +31,7 @@ bool Delete_Node(unsigned int id, SLIST *phead);									//删除节点
 
 SLIST *Creat_Slist(); 												//创建链表
 bool Show_Slist(SLIST *phead);										//显示链表
-bool Clean_Slist(SLIST *phead);   									//销毁链表
+bool Clean_Slist(SLIST **pphead);   								//销毁链表
 
 
 #endif
