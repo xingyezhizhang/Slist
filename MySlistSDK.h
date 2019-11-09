@@ -26,10 +26,11 @@ typedef struct slist
 bool Creat_Node(char *pname, SLIST **ppnext/*为连接新节点准备的指针的地址*/); 		//创建节点 
 bool Add_Node(char *pname, SLIST *phead);   										//添加节点 
 bool Input_Node(unsigned int id, char *pname, SLIST *phead); 						//插入节点
+bool Find_Node(char *pname, SLIST *phead, SLIST *paccept_node);						//查询节点
 bool Delete_Node(unsigned int id, SLIST *phead);									//删除节点 
 
 SLIST *Creat_Slist(); 												//创建链表
-bool Find_Slist(char *pname, SLIST *phead, SLIST *paccept_node);    //查找链表
+bool Show_Slist(SLIST *phead);										//显示链表
 bool Clean_Slist(SLIST *phead);   									//销毁链表
 
 

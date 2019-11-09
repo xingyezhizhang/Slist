@@ -115,50 +115,40 @@ bool Delete_Node(unsigned int id, SLIST *phead)
 	move = phead;
 	if (id)
 	{
-		printf("要删除表头，请直接销毁链表！\n");
-	}
-	//使move指针指向 要删除的节点的上一个节点 
-	while (id != (move->ID + 1))
-	{
-		move = move->NEXT;
-		if (NULL == move->NEXT)
+		//使move指针指向 要删除的节点的上一个节点
+		while (id != (move->ID + 1))
 		{
-			printf("当前已是最后的节点，ID为%d\n", move->ID);
-			printf("请正确输入ID！\n");
-			return false;
+			move = move->NEXT;
+			if (NULL == move->NEXT)
+			{
+				printf("当前已是最后的节点，ID为%d\n", move->ID);
+				printf("请正确输入ID！\n");
+				return false;
+			}
 		}
-	}
-	/************节点删除************/
-	//del指针 指向 要删除的节点 
-	del = move->NEXT;
-	//使上一个节点 关联 要删除的节点的下一个节点 
-	move->NEXT = del->NEXT;
-	free(del);   //删除节点
-
-	//维护ID的连续性
-	move = move->NEXT;
-	while (move)
-	{
-		move->ID = move->ID - 1;
+		/************节点删除************/
+		//del指针 指向 要删除的节点 
+		del = move->NEXT;
+		//使上一个节点 关联 要删除的节点的下一个节点 
+		move->NEXT = del->NEXT;
+		free(del);   //删除节点
+		//维护ID的连续性
 		move = move->NEXT;
+		while (move)
+		{
+			move->ID = move->ID - 1;
+			move = move->NEXT;
+		}
+		/************节点删除************/
+		return true;
 	}
-	/************节点删除************/
-	return true;
+	printf("要删除表头，请直接销毁链表！\n");
+	return false;
 }
 
 
-//创建链表 
-SLIST *Creat_Slist()
-{
-	SLIST *head = NULL;
-	Creat_Node("链表表头", &head);
-	head->ID = 0;
-	return head;
-}
-
-
-//查询链表 
-bool Find_Slist(char *pname, SLIST *phead, SLIST *paccept_node)
+//查询节点
+bool Find_Node(char *pname, SLIST *phead, SLIST *paccept_node)
 {
 	SLIST *move;
 	move = phead;
@@ -185,6 +175,7 @@ bool Find_Slist(char *pname, SLIST *phead, SLIST *paccept_node)
 		//将数据拷贝出去
 		paccept_node->ID = move->ID;
 		strcpy(paccept_node->NAME, move->NAME);
+		paccept_node->NEXT = NULL;   //节点的指针不返回
 		printf("该字符串在链表中的ID为%d\n", move->ID);
 		return true;
 	}
@@ -192,6 +183,41 @@ bool Find_Slist(char *pname, SLIST *phead, SLIST *paccept_node)
 	return false;
 }
 
+
+//创建链表 
+SLIST *Creat_Slist()
+{
+	SLIST *head = NULL;
+	Creat_Node("链表表头", &head);
+	head->ID = 0;
+	return head;
+}
+
+
+//显示链表
+bool Show_Slist(SLIST *phead)
+{
+	SLIST *move;
+	move = phead;
+	//判断是否有链表
+	if (move)
+	{
+		//判断是否是头指针
+		if (move->ID)
+		{
+			printf("请输入头指针！\n");
+			return false;
+		}
+		do
+		{
+			//显示节点信息
+			printf("ID:%d\tname:%s\n", move->ID, move->NAME);
+		} while (move = move->NEXT); //遍历链表
+		return true;
+	}
+	printf("当前没有链表！\n");
+	return true;
+}
 
 //销毁链表
 bool Clean_Slist(SLIST *phead)
