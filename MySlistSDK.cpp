@@ -13,8 +13,10 @@ bool Creat_Node(char *pname, SLIST **ppnext /*为连接新节点准备的指针的地址*/)
 		if (creat = (SLIST *)malloc(sizeof(SLIST)))
 		{
 			/************数据存储************/
+			//计算字符长度
+			creat->NAMELEN = strlen(pname) + 1;
 			//开辟刚好存放字符的内存空间
-			creat->NAME = (char*)malloc(sizeof(strlen(pname)) + 1);
+			creat->NAME = (char*)malloc(creat->NAMELEN);
 			//将姓名放入节点
 			strcpy(creat->NAME, pname);
 			/************数据存储************/
@@ -152,6 +154,7 @@ bool Delete_Node(unsigned int id, SLIST *phead)
 bool Find_Node(char *pname, SLIST *phead, SLIST *paccept_node)
 {
 	SLIST *move;
+	int namelen = strlen(pname) + 1;
 	move = phead;
 	if (move)  //判断是否有链表 
 	{
@@ -174,8 +177,9 @@ bool Find_Node(char *pname, SLIST *phead, SLIST *paccept_node)
 			}
 		}
 		//将数据拷贝出去
-		paccept_node->ID = move->ID;
-		strcpy(paccept_node->NAME, move->NAME);
+		paccept_node->ID = move->ID;		//节点ID拷贝
+		paccept_node->NAMELEN = move->NAMELEN;	//字符长度值拷贝
+		strcpy(paccept_node->NAME, move->NAME);	//字符拷贝
 		paccept_node->NEXT = NULL;   //节点的指针不返回
 		printf("该字符串在链表中的ID为%d\n", move->ID);
 		return true;
@@ -188,10 +192,10 @@ bool Find_Node(char *pname, SLIST *phead, SLIST *paccept_node)
 //创建链表 
 SLIST *Creat_Slist()
 {
-	SLIST *head = NULL;
-	Creat_Node("链表表头", &head);
-	head->ID = 0;
-	return head;
+	SLIST *phead = NULL;
+	Creat_Node("链表表头", &phead);
+	phead->ID = 0;
+	return phead;
 }
 
 
@@ -212,7 +216,7 @@ bool Show_Slist(SLIST *phead)
 		do
 		{
 			//显示节点信息
-			printf("ID:%d\tname:%s\n", move->ID, move->NAME);
+			printf("ID:%d\tnamelen:%d\tname:%s\n", move->ID, move->NAMELEN, move->NAME);
 		} while (move = move->NEXT); //遍历链表
 		return true;
 	}

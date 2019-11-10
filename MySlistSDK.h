@@ -17,9 +17,10 @@
 //创建一个用于链表的结构体 
 typedef struct slist
 {
-	unsigned int ID;
-	char *NAME;
-	struct slist *NEXT;
+	unsigned int ID;				//链表节点的唯一ID
+	char *NAME;						//文字存储
+	unsigned int NAMELEN;			//存储文字长度
+	struct slist *NEXT;				//关联下一节点
 }SLIST;
 
 //函数声明 
