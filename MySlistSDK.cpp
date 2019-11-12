@@ -179,7 +179,9 @@ bool Find_Node(char *pname, SLIST *phead, SLIST *paccept_node)
 		//将数据拷贝出去
 		paccept_node->ID = move->ID;		//节点ID拷贝
 		paccept_node->NAMELEN = move->NAMELEN;	//字符长度值拷贝
-		strcpy(paccept_node->NAME, move->NAME);	//字符拷贝
+		//字符拷贝  先为指针开辟内存，再进行拷贝
+		paccept_node->NAME = (char*)malloc(strlen(move->NAME) + 1);
+		strcpy(paccept_node->NAME, move->NAME);	
 		paccept_node->NEXT = NULL;   //节点的指针不返回
 		printf("该字符串在链表中的ID为%d\n", move->ID);
 		return true;
